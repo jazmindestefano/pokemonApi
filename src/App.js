@@ -61,7 +61,7 @@ function App() {
                 <input
                   className="input"
                   ref={pok}
-                  onChange={handleChangePokemones}
+                  onChange={() => handleChangePokemones()}
                 />
               </div>
             </div>
@@ -83,7 +83,7 @@ function App() {
                 <input
                   className="input"
                   ref={ab}
-                  onChange={handleChangeAbilities}
+                  onChange={() => handleChangeAbilities()}
                 />
               </div>
             </div>
