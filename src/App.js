@@ -1,23 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
+  const [pokemones, setPokemones] = useState(null);
+  const [abilities, setAbilities] = useState([]);
+
+
+
+  useEffect(() => {
+    const fetchPokemones = async () => {
+      const data = await fetch("https://pokeapi.co/api/v2/pokemon");
+      const json = await data.json();
+      setPokemones(json);
+    };
+    fetchPokemones();
+  }, []);
+
+  useEffect(() => {
+    const fetchAbilities = async () => {
+      const data = await fetch("https://pokeapi.co/api/v2/ability/");
+      const json = await data.json();
+      setAbilities(json);
+    };
+    fetchAbilities();
+  }, []);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <h1>Pokemon</h1>
+        {pokemones ? (
+          <div>
+            {pokemones.results?.map((p) =>{ return <p>name: {p.name}</p>})}
+          </div>
+        ) : (
+          <p>Cargando...</p>
+        )}
+      </div>
+
+      <div>
+        <h1>Abilities</h1>
+        {abilities ? (
+          <div>
+            {abilities.results?.map((a) => {
+              return <p>ability: {a.name}</p>;
+            })}
+          </div>
+        ) : (
+          <p>Cargando...</p>
+        )}
+      </div>
     </div>
   );
 }
