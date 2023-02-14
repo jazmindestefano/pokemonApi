@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 function App() {
   const [pokemones, setPokemones] = useState(null);
-  const [abilities, setAbilities] = useState([]);
+  const [abilities, setAbilities] = useState(null);
 
+  const [pokemonesFiltered, setPokemonesFiltered] = useState([]);
+  const [abilititesFiltered, setAbilititesFiltered] = useState([]);
 
+  const pok = useRef(null);
+  const ab = useRef(null);
 
   useEffect(() => {
     const fetchPokemones = async () => {
@@ -25,31 +29,72 @@ function App() {
     fetchAbilities();
   }, []);
 
+  const handleChangePokemones = () => {
+    const newPokemons = [];
+    pokemones.results?.filter((p) => {
+      if (p.name.includes(pok.current.value)) {
+        newPokemons.push(p.name);
+      }
+    });
+    setPokemonesFiltered(newPokemons);
+  };
+
+  const handleChangeAbilities = () => {
+    const newAbilities = [];
+    abilities.results?.filter((p) => {
+      if (p.name.includes(ab.current.value)) {
+        newAbilities.push(p.name);
+      }
+    });
+    setAbilititesFiltered(newAbilities);
+  };
 
   return (
     <div className="App">
-      <div>
-        <h1>Pokemon</h1>
-        {pokemones ? (
-          <div>
-            {pokemones.results?.map((p) =>{ return <p>name: {p.name}</p>})}
+      <div className="container">
+        <div className="list">
+          <div className="title">
+            <h1>Pokemon</h1>
+            <div>
+              <input
+                className="input"
+                ref={pok}
+                onChange={handleChangePokemones}
+              />
+            </div>
           </div>
-        ) : (
-          <p>Cargando...</p>
-        )}
-      </div>
+          {pokemones ? (
+            <div>
+              {pokemonesFiltered.slice(0, 10).map((p) => {
+                return <p>name: {p}</p>;
+              })}
+            </div>
+          ) : (
+            <p>Cargando...</p>
+          )}
+        </div>
 
-      <div>
-        <h1>Abilities</h1>
-        {abilities ? (
-          <div>
-            {abilities.results?.map((a) => {
-              return <p>ability: {a.name}</p>;
-            })}
+        <div className="list">
+          <div className="title">
+            <h1>Abilities</h1>
+            <div>
+              <input
+                className="input"
+                ref={ab}
+                onChange={handleChangeAbilities}
+              />
+            </div>
           </div>
-        ) : (
-          <p>Cargando...</p>
-        )}
+          {abilities ? (
+            <div>
+              {abilititesFiltered.slice(0, 10).map((a) => {
+                return <p>ability: {a}</p>;
+              })}
+            </div>
+          ) : (
+            <p>Cargando...</p>
+          )}
+        </div>
       </div>
     </div>
   );
