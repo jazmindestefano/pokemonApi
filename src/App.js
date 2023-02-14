@@ -51,7 +51,10 @@ function App() {
 
   return (
     <div className="App">
-      <div className="container">
+      <div className="big-container">
+        <h1>Api Pokemones</h1>
+
+        <div className="container">
         <div className="list">
           <div className="title">
             <h1>Pokemon</h1>
@@ -95,6 +98,9 @@ function App() {
             <p>Cargando...</p>
           )}
         </div>
+        </div>
+
+        
       </div>
     </div>
   );
